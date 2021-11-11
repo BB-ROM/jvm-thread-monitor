@@ -3,15 +3,6 @@ import java.lang.Thread;
 
 public class ThreadMonitor {
 	
-	public ThreadMonitor() {
-		ThreadGroup root = getRoot();
-		System.out.println("Thread group");
-		System.out.println("Name: " + root.getName());
-		System.out.println("Max. priority: " + root.getMaxPriority());
-		printThreads(root, 0);
-		printThreadGroups(root, 0);
-	}
-	
 	//Returns the root ThreadGroup of the JVM
 	ThreadGroup getRoot() {
 		Thread thread = Thread.currentThread();
@@ -67,6 +58,17 @@ public class ThreadMonitor {
 			printThreads(tg, depth + 1);
 			printThreadGroups(tg, depth + 1);
 		}
+	}
+
+	//Prints a tree of all ThreadGroups and Threads of the JVM
+	public void refreshListing() {
+		ThreadGroup root = getRoot();
+		System.out.println("Thread group");
+		System.out.println("Name: " + root.getName());
+		System.out.println("Max. priority: " + root.getMaxPriority());
+		printThreads(root, 0);
+		printThreadGroups(root, 0);
+		System.out.println("\n\n\n");
 	}
 	
 }
