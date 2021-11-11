@@ -21,8 +21,14 @@ public class ThreadMonitor {
 	void printThreads(ThreadGroup parent) {
 		Thread[] threads = new Thread[parent.activeCount()];
 		parent.enumerate(threads);
-		for(Thread t : threads) {
-			System.out.println("* " + t);
+		for(Thread t : threads) {		
+			System.out.println("|_");
+			System.out.println("| Thread");
+			System.out.println("| Name: " + t.getName());
+			System.out.println("| Id: " + t.getId());
+			System.out.println("| State: " + t.getState());
+			System.out.println("| Priority: " + t.getPriority());
+			System.out.println("| Daemon: " + t.isDaemon());
 		}
 	}
 	
