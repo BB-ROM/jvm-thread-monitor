@@ -6,6 +6,7 @@ public class ThreadMonitor {
 	public ThreadMonitor() {
 		ThreadGroup root = getRoot();
 		System.out.println("Root: " + root);
+		printThreads(root);
 	}
 	
 	ThreadGroup getRoot() {
@@ -15,6 +16,14 @@ public class ThreadMonitor {
 			root = root.getParent();
 		}
 		return root;
+	}
+
+	void printThreads(ThreadGroup parent) {
+		Thread[] threads = new Thread[parent.activeCount()];
+		parent.enumerate(threads);
+		for(Thread t : threads) {
+			System.out.println("* " + t);
+		}
 	}
 	
 }
