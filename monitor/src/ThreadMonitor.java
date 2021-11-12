@@ -1,7 +1,25 @@
 import java.lang.ThreadGroup;
 import java.lang.Thread;
 
-public class ThreadMonitor {
+public class ThreadMonitor implements Runnable {
+
+	private volatile boolean alive = true;
+	
+	public void terminate() {
+        	this.alive = false;
+    	}
+	
+	@Override
+	public void run() {
+		while(alive) {
+			refreshListing();
+			try {
+				Thread.sleep(5000);
+			} catch(InterruptedException ie) {
+				
+			}
+		}
+	}
 	
 	//Returns the root ThreadGroup of the JVM
 	ThreadGroup getRoot() {
