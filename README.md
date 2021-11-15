@@ -20,7 +20,7 @@ balance.
 
 ### Task 2
 
-1. #### Basic functionality
+#### Basic functionality
 Your program must list each thread group and all threads within each group. When outputting each
 thread, your program must also list the following information (including some descriptive text):
 
@@ -30,7 +30,7 @@ thread, your program must also list the following information (including some de
 - [x] The priority of the thread
 - [x] Whether or not the thread is a daemon
 
-2.  #### Bonus marks (optional)
+#### Bonus marks (optional)
 - [x] It periodically refreshes the listing of threads (including their information) and thread groups by
 implementing a refresh mechanism.
 
