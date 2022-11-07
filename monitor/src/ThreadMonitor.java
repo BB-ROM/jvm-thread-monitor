@@ -1,7 +1,10 @@
 import java.lang.ThreadGroup;
 import java.lang.Thread;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 public class ThreadMonitor implements Runnable {
+
+	private Thread selectedThread;
 
 	private volatile boolean alive = true;
 	
@@ -89,4 +92,50 @@ public class ThreadMonitor implements Runnable {
 		System.out.println("\n\n\n");
 	}
 	
+	//Adds all threads belonging to a parent ThreadGroup as DefaultMutableTreeNode children of the parentNode
+	private void addThreadNodes(DefaultMutableTreeNode parentNode, ThreadGroup parent) {
+		Thread[] threads = new Thread[parent.activeCount()];
+		parent.enumerate(threads);
+		
+		for(Thread t : threads) {		
+			parentNode.add(new DefaultMutableTreeNode(t));
+		}
+	}
+	
+	//Adds all the sub-ThreadGroup trees belonging to a parent ThreadGroup as DefaultMutableTreeNode children of the parentNode
+	private void addThreadGroupNodes(DefaultMutableTreeNode parentNode, ThreadGroup parent) {
+		ThreadGroup[] threadGroups = new ThreadGroup[parent.activeGroupCount()];
+		parent.enumerate(threadGroups);
+		
+		for(ThreadGroup tg : threadGroups) {
+			DefaultMutableTreeNode threadGroupNode = new DefaultMutableTreeNode(tg);
+			parentNode.add(threadGroupNode);
+			addThreadNodes(threadGroupNode, tg);
+			addThreadGroupNodes(threadGroupNode, tg);
+		}
+	}
+	
+	//Returns a DefaultMutableTreeNode representing the parent node of the Thread tree with all its children
+	public DefaultMutableTreeNode buildTree() {
+		ThreadGroup root = getRoot();
+		DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode(root);
+		addThreadNodes(rootNode, root);
+		addThreadGroupNodes(rootNode, root);
+		return rootNode;
+	}
+	
+	public Thread getSelectedThread() {
+		return selectedThread;
+	}
+	
+	public void setSelectedThread(Thread t) {
+		selectedThread = t;
+	}
+	
+	public void interruptSelectedThread() {
+		synchronized (selectedThread) {
+			selectedThread.interrupt();
+		}
+	}
+
 }
